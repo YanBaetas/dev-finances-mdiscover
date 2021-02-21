@@ -75,6 +75,7 @@ button:hover {
   margin-bottom: .8rem;
 }
 
+.clear-button button,
 .button.cancel {
   color: var(--red);
   border: 2px solid var(--red);
@@ -90,6 +91,59 @@ button:hover {
 
 .button.cancel:hover {
   opacity: 1;
+}
+
+.transaction-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 200px;
+  border: 1px solid black;
+  border-radius: .25rem;
+}
+
+.filter-buttons button {
+  height: 100%;
+  padding: .5rem;
+  background: #FFF;
+  color: black;
+  border-radius: 0;
+}
+
+.filter-buttons button:hover,
+.filter-buttons button.active {
+  background: var(--green);
+  color: #FFF;
+  border-radius: 0px;
+  outline: none;
+  -webkit-box-shadow: inset 0px 0px 2px black;
+     -moz-box-shadow: inset 0px 0px 2px black;
+          box-shadow: inset 0px 0px 2px black;
+  transition: .4s;
+}
+
+.filter-buttons button:first-child {
+  border-radius: .25rem 0 0 .25rem;
+}
+.filter-buttons button:last-child {
+  border-radius: 0 .25rem .25rem 0;
+}
+
+.clear-button button {
+  background: none;
+  padding: .25rem;
+}
+
+.clear-button button:hover {
+  background: var(--red);
+  color: #FFF;
+  transition: .4s;
 }
 
 /* Header =====================*/
@@ -208,6 +262,8 @@ footer {
 }
 
 /* Modal =====================*/
+
+.modal-overlay-clear,
 .modal-overlay {
   width: 100%;
   height: 100%;
@@ -227,11 +283,13 @@ footer {
   z-index: 999;
 }
 
+.modal-overlay-clear.active,
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
+.modal-clear,
 .modal {
   background: #F0F2F5;
   padding: 2.4rem;

@@ -3,8 +3,13 @@ const Modal = {
       document
       .querySelector('.modal-overlay')
       .classList.toggle('active');
-    }
+    },
+  toggleClearModal() {
+    document
+    .querySelector('.modal-overlay-clear')
+    .classList.toggle('active');
   }
+}
 
 const Storage = {
   get() {
@@ -23,6 +28,12 @@ const Transaction = {
     Transaction.all.push(transaction);
 
     App.reload();
+  },
+
+  removeAll() {
+    Transaction.all = [];
+    App.reload();
+    Modal.toggleClearModal();
   },
 
   remove(event) {
@@ -64,20 +75,39 @@ const Transaction = {
 const DOM = {
   transactionsContainer: document.querySelector('#data-table tbody'),
 
-  addTransaction(transaction, index) {
+  addTransaction(transaction, index, filter) {
     const tr = document.createElement('tr');
     AnimationTable.animaFadeInUp(tr);
-    tr.innerHTML = DOM.innerHTMLTransaction(transaction, index);
-    tr.dataset.index = index;
-    tr.querySelector('[data-remove]').addEventListener('click', Transaction.remove);
-    DOM.transactionsContainer.appendChild(tr);
+    tr.innerHTML = DOM.innerHTMLTransaction(transaction, index, filter);
+    if(tr.innerHTML !== "") {
+      tr.dataset.index = index;
+      tr.querySelector('[data-remove]').addEventListener('click', Transaction.remove);
+      DOM.transactionsContainer.appendChild(tr);
+    }
   },
 
-  innerHTMLTransaction(transaction, index) {
-    const CSSClass = transaction.amount > 0 ? "income" : "expense";
+  innerHTMLTransaction(transaction, index, filter) {
+    let html = "";
+    if(filter === "income" && transaction.amount > 0) {
+      const CSSClass = "income";
+      const amount = Utils.formatCurrency(transaction.amount);
+      html = DOM.createHTMLTransactions(transaction, CSSClass, amount);
 
-    const amount = Utils.formatCurrency(transaction.amount);
+    } else if (filter === "expense" && transaction.amount < 0) {
+      const CSSClass = "expense";
+      const amount = Utils.formatCurrency(transaction.amount);
+      html = DOM.createHTMLTransactions(transaction, CSSClass, amount);
 
+    } else if (filter === "all") {
+      const CSSClass = transaction.amount > 0 ? "income" : "expense";
+      const amount = Utils.formatCurrency(transaction.amount);
+      html = DOM.createHTMLTransactions(transaction, CSSClass, amount);
+    }
+    // onclick="Transaction.remove(${index})"
+    return html;
+  },
+
+  createHTMLTransactions(transaction, CSSClass, amount) {
     const html = `
     <tr>
       <td class="description">${transaction.description}</td>
@@ -88,7 +118,6 @@ const DOM = {
       </td>
     </tr>
     `
-    // onclick="Transaction.remove(${index})"
     return html;
   },
 
@@ -104,6 +133,14 @@ const DOM = {
     document
       .getElementById('totalDisplay')
       .innerHTML = Utils.formatCurrency(Transaction.total());
+  },
+
+  filterTransactions(event, filter) {
+    const buttons = document.querySelectorAll('.filter-buttons button');
+    buttons.forEach(button => button.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    DOM.clearTransactions();
+    Transaction.all.forEach((transaction, index) => DOM.addTransaction(transaction, index, filter));
   },
 
   clearTransactions() {
@@ -211,7 +248,7 @@ const AnimationTable = {
 
 const App = {
   init() {
-    Transaction.all.forEach(DOM.addTransaction);
+    Transaction.all.forEach((transaction, index) => DOM.addTransaction(transaction, index, 'all'));
 
     DOM.updateBalance();
 
