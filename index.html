@@ -47,6 +47,16 @@
         <h2 class="sr-only">Transações</h2>
 
         <a href="#" onclick="Modal.toggle()" class="button new">+ Nova Transação</a>
+        <div class="transaction-buttons">
+          <div class="filter-buttons">
+            <button onclick="DOM.filterTransactions(event, 'all')">Todas</button>
+            <button onclick="DOM.filterTransactions(event, 'income')">Entradas</button>
+            <button onclick="DOM.filterTransactions(event, 'expense')">Saídas</button>
+          </div>
+          <div class="clear-button">
+            <button onclick="Modal.toggleClearModal()">Limpar Transações</button>
+          </div>
+        </div>
         <table id="data-table">
           <thead>
             <tr>
@@ -107,6 +117,18 @@
             </div>
           </form>
         </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay-clear">
+      <div class="modal-clear">
+        <h2>Atenção!</h2>
+        <p>A confirmação desta opção apagará todos os dados de finanças.</p>
+        <p>Deseja continuar?</p>
+          <div class="input-group actions">
+            <a href="#" onclick="Modal.toggleClearModal()" class="button cancel">Cancelar</a>
+            <button onclick="Transaction.removeAll()">Continuar</button>
+          </div>
       </div>
     </div>
 
