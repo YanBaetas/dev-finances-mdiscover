@@ -197,6 +197,10 @@ header {
   color: #FFF;
 }
 
+.card.total.negative-total {
+  background: var(--red);
+}
+
 /* Table =====================*/
 #transaction {
   display: block;
@@ -281,6 +285,12 @@ footer {
   visibility: hidden;
 
   z-index: 999;
+}
+
+.modal-overlay-clear h2 {
+  color: var(--red);
+  text-align: center;
+  margin-top: -1px;
 }
 
 .modal-overlay-clear.active,

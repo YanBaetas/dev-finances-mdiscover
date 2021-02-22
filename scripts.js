@@ -1,13 +1,54 @@
 const Modal = {
   toggle() {
-      document
-      .querySelector('.modal-overlay')
-      .classList.toggle('active');
-    },
+    Form.clearFields();
+    document
+    .querySelector('.modal-overlay')
+    .classList.toggle('active');
+  },
   toggleClearModal() {
     document
     .querySelector('.modal-overlay-clear')
     .classList.toggle('active');
+  },
+  
+  outsideClick(event, modal) {
+    const modalOverlay = document.querySelector(modal);
+
+    if (!modalOverlay.contains(event.target)) {
+      if (modal === '.modal') {
+        Modal.toggle();
+      }
+      if (modal === '.modal-clear') {
+        Modal.toggleClearModal();
+      }
+    }
+    
+    /*
+    // With BoundingClientRect
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    if (modal === '.modal') {
+      const top = document.querySelector('.modal').getBoundingClientRect().top;
+      const right = document.querySelector('.modal').getBoundingClientRect().right;
+      const bottom = document.querySelector('.modal').getBoundingClientRect().bottom;
+      const left = document.querySelector('.modal').getBoundingClientRect().left;
+  
+      if (clickX > right || clickX < left || clickY < top || clickY > bottom) {
+        Modal.toggle();
+      }
+    }
+
+    if (modal === '.modal-clear') {
+      const top = document.querySelector('.modal-clear').getBoundingClientRect().top;
+      const right = document.querySelector('.modal-clear').getBoundingClientRect().right;
+      const bottom = document.querySelector('.modal-clear').getBoundingClientRect().bottom;
+      const left = document.querySelector('.modal-clear').getBoundingClientRect().left;
+  
+      if (clickX > right || clickX < left || clickY < top || clickY > bottom) {
+        Modal.toggleClearModal();
+      }
+    }*/
   }
 }
 
@@ -133,6 +174,16 @@ const DOM = {
     document
       .getElementById('totalDisplay')
       .innerHTML = Utils.formatCurrency(Transaction.total());
+
+    document
+      .querySelector('.card.total')
+      .classList.remove('negative-total');
+    
+    if(Transaction.total() < 0) {
+      document
+        .querySelector('.card.total')
+        .classList.add('negative-total');
+    }
   },
 
   filterTransactions(event, filter) {
