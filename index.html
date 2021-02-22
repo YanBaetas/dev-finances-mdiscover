@@ -49,7 +49,7 @@
         <a href="#" onclick="Modal.toggle()" class="button new">+ Nova Transação</a>
         <div class="transaction-buttons">
           <div class="filter-buttons">
-            <button onclick="DOM.filterTransactions(event, 'all')">Todas</button>
+            <button class="active" onclick="DOM.filterTransactions(event, 'all')">Todas</button>
             <button onclick="DOM.filterTransactions(event, 'income')">Entradas</button>
             <button onclick="DOM.filterTransactions(event, 'expense')">Saídas</button>
           </div>
@@ -73,7 +73,7 @@
       </section>
     </main>
 
-    <div class="modal-overlay" >
+    <div class="modal-overlay" onclick="Modal.outsideClick(event, '.modal')">
       <div class="modal">
         <div id="form">
           <h2>Nova Transação</h2>
@@ -120,7 +120,7 @@
       </div>
     </div>
 
-    <div class="modal-overlay-clear">
+    <div class="modal-overlay-clear" onclick="Modal.outsideClick(event, '.modal-clear')">
       <div class="modal-clear">
         <h2>Atenção!</h2>
         <p>A confirmação desta opção apagará todos os dados de finanças.</p>
